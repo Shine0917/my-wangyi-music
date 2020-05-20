@@ -162,6 +162,52 @@ const Player = (props) => {
     if(index === 0) index = playList.length -1;
     changeCurrentIndexDispatch(index);
   }
+  const handleNext = () => {
+    if(playList.length === 1) {
+      handleLoop();
+      return;
+    }
+    let index = currentIndex + 1;
+    if(index === playList.length) index = 0;
+    changeCurrentIndexDispatch(index);
+  }
 
+  const handleEnd = () => {
+    if(mode === playMode.loop) {
+      handleLoop();
+    }else {
+      handleNext();
+    }
+  }
 
+  const getPlayMode = () => {
+    let content;
+    if(mode === playMode.sequence) {
+      content = "&#xe625;";
+    }else if(mode === playMode.loop) {
+      content = "&#xe653;";
+    }else {
+      content = "&#xe61b;";
+    }
+    return content;
+  }
+
+  const changeMode = () => {
+    let newMode = (mode +1) %3;
+    if(newMode === 0) {
+      changePlayListDispatch(sequencePlayList);
+      let index = findIndex(currentSong, sequencePlayList);
+      changeCurrentIndexDispatch(index);
+      setModeText('顺序循环');
+    }else if (newMode === 1) {
+ // 单曲循环
+    changePlayListDispatch(sequencePlayList);
+    setModeText('单曲循环');
+    }else if(newMode === 2) {
+     // 随机播放
+     let newList = shuffle(sequencePlayList);
+     let index = findIndex(currentSong, newList);
+     
+    }
+  }
 }
